@@ -1,0 +1,62 @@
+# Build a database
+# Run the main.py from your IDE or the command line in the project home directory.
+# Observe the execution times.
+# Run the following commands one at a time.
+
+# Make sure you have the 'Collection' directory in the project root directory:
+
+# Create the following collections if they do not exist.
+create Patient
+create Observation
+
+insert file Patient1.fhir into Patient
+insert file Patient2.fhir into Patient
+insert file Patient3.fhir into Patient
+insert file Patient4.fhir into Patient
+
+select count from Patient
+select id from Patient
+select * from Patient
+
+insert file Observation1.fhir into Observation
+insert file Observation2.fhir into Observation
+select * from Observation
+
+select * from Patient,Observation where id = 1
+select * from Test where identifier value = 1001
+
+# Test some simple ordering
+select * from Patient
+reverse Patient
+select * from Patient
+order Patient on id
+select * from Patient
+
+# Now we are adding an extra 1000 Patient0's to see how search times change.
+load 1000 Patient0.fhir into Patient
+insert file Patient5.fhir into Patient
+
+select count from Patient
+
+selectDistinct * from Patient where id = 1
+selectDistinct * from Patient where id = 1 : 5
+
+reverse Patient
+selectDistinct * from Patient where id = 1
+selectDistinct * from Patient where id = 1 : 5
+
+randomise Patient
+selectDistinct * from Patient where id = 1
+selectDistinct * from Patient where id = 1 : 5
+
+# The order command will take ~30 seconds as the sort algorithm is slow
+# BEWARE when you load 10,000 patients.
+order Patient on id
+selectDistinct * from Patient where id = 5
+reverse Patient
+selectDistinct * from Patient where id = 5
+
+# Now try some tests with 10000+ Patients
+# BEWARE order command - it needs to be rewritten.
+load 10000 Patient0.fhir into Patient
+
