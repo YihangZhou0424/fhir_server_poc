@@ -150,6 +150,10 @@ class Resource:
             f.write(self.data)
             f.close()
             self.state = Schema.SAVED
+            # Bug: Reload the resource so white space is removed.
+            fn = str(self.uuid)
+            self.data = ""
+            self.load(fn)
         except FileExistsError:
             self.state = Schema.SAVE_ERROR
             print("Resource: Save Error")
