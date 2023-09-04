@@ -3,7 +3,8 @@
 # Observe the execution times.
 # Run the following commands one at a time.
 
-# Make sure you have the 'Collection' directory in the project root directory:
+# Make sure you have the 'Collection' directory in the project root directory.
+# Add the Collection folder to .gitignore so the database files are loaded into a GitHub repository.
 
 # Create the following collections if they do not exist.
 create Patient
