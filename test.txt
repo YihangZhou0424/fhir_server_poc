@@ -24,7 +24,7 @@ insert file Observation2.fhir into Observation
 select * from Observation
 
 select * from Patient,Observation where id = 1
-select * from Test where identifier value = 1001
+select * from Patient where identifier value = 1001
 
 # Test some simple ordering
 select * from Patient
