@@ -1,6 +1,8 @@
 #
 # Order collection command.
 # order <collection> on <attribute>
+# order <collection> on <segment> <attribute>
+# order <collection> on <segment1> with <segment2> on <attribute>
 #
 
 def order_collection(schema, command_line):
