@@ -147,8 +147,13 @@ class Collection:
                 except None:
                     print("Invalid attribute values")
                     return
-                # Swap if the resource data attribute found is greater than the next element.
 
+                # Check a and b.
+                if a is None or b is None:
+                    print("Invalid attribute comparison")
+                    return
+
+                # Swap if the resource data attribute found is greater than the next element.
                 if a > b:
                     swapped = True
                     self.resources[j], self.resources[j + 1] = self.resources[j + 1], self.resources[j]
