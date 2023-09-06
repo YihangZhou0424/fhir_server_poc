@@ -23,6 +23,7 @@ HELP = \
     "clear\n" + \
     "reverse <collection>\n" + \
     "randomise <collection>\n" + \
+    "order|orderFast <collection> on <attribute>\n" +\
     "select <qualifier> from <collection_list>\n" + \
     "select <qualifier> from <collection_list> where <attribute> <operator> <value>\n" + \
     "select <qualifier> from <collection_list> where <attribute> = <value> : <value>\n" + \
