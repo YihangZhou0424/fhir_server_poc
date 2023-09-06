@@ -25,12 +25,13 @@ class Resource:
         self.type = resource_type
         self.data = ""
         self.state = Schema.LOADED
+        self.sort_key = "0"
 
     def __str__(self):
         if length:
             return str(len(self.data)) + ', ' + str(self.uuid) + ', ' + self.type + ', ' + self.data
         else:
-            return str(self.uuid) + ', ' + self.type + ', ' + self.data
+            return str(self.uuid) + ', ' + self.sort_key + ', ' + self.type + ', ' + self.data
 
     # Load a resource from a file.
     def load_file(self, file_name, collection):

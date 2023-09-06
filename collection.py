@@ -6,8 +6,7 @@ import random
 import uuid
 from schema import Schema
 from resource import Resource
-from query import get_attribute_value, get_resources_by_attribute_value
-from operator import attrgetter
+from query import get_attribute_value
 
 #
 # The Collection class is analogous to a table.
@@ -129,12 +128,13 @@ class Collection:
     # THIS SORT IS TOO SLOW
     # Takes approximately 20 seconds for 1000 records
     # Takes approximately 5 minutes for 10000 records
-    # TODO: Implement a faster Order algorithm
+    # TODO: Implement a faster Order algorithm - see fast_sort()
     #
     def sort(self, attribute, reverse):
         n = len(self.resources)
         swapped = False
-        # Traverse through all collection resources
+
+        # Traverse through all collection resources.
         for i in range(n - 1):
             for j in range(0, n - i - 1):
 
@@ -142,6 +142,7 @@ class Collection:
                 # Get the elements from the resource data.
 
                 try:
+                    # get_attribute_value is very expensive
                     a = get_attribute_value(self.resources[j].data, attribute)
                     b = get_attribute_value(self.resources[j + 1].data, attribute)
                 except None:
@@ -165,3 +166,17 @@ class Collection:
             # Reverse the order if descending.
             if reverse:
                 self.reverse()
+
+    #
+    # Use the python list sort method to do a very fast search.
+    # This method takes orders of magnitude less time that the linear sort() method.
+    # sort_key is a Resource attribute that is filled automatically.
+    #
+    def fast_sort(self, attribute, reverse):
+        # Fill the collection's resource sort_key
+        # The sort_key will have each resource's attribute for fast access.
+        for r in self.resources:
+            r.sort_key = get_attribute_value(r.data, attribute)
+
+        # Sort the collection.
+        self.resources.sort(key=lambda data: data.sort_key)

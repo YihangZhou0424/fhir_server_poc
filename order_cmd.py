@@ -22,8 +22,9 @@ def order_collection(schema, command_line):
 
     # TODO check id
     # TODO more validation
-
-    collection.sort(id, False)
+    if command_line[0] == "order":
+        collection.sort(id, False)
+    collection.fast_sort(id, False)
 
 
 

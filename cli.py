@@ -122,7 +122,7 @@ def cli(schema):
             #   Place functions in new file
             #   Add import at the top of this file.
             #
-            elif command == "order":
+            elif command == "order" or "orderFast":
                 order_collection(schema, command_line)
             else:
                 print("Unknown command")
