@@ -6,7 +6,7 @@ Author: Tim Hastings, 2023
 import os.path
 import uuid
 
-from query import get_attribute_value
+from query import get_attribute_value, get_segment_attribute_value
 from schema import Schema
 import json
 
@@ -25,13 +25,21 @@ class Resource:
         self.type = resource_type
         self.data = ""
         self.state = Schema.LOADED
-        self.sort_key = "0"
 
     def __str__(self):
         if length:
             return str(len(self.data)) + ', ' + str(self.uuid) + ', ' + self.type + ', ' + self.data
         else:
-            return str(self.uuid) + ', ' + self.sort_key + ', ' + self.type + ', ' + self.data
+            return str(self.uuid) + ', ' + ', ' + self.type + ', ' + self.data
+
+    # Find the attribute value in the FHIR (json).
+    def get_attribute_value(self, attribute):
+        att = get_attribute_value(self.data, attribute)
+        return att
+
+    # Find the attribute in the first segment of FHIR (json).
+    def get_segment_attribute_value(self, segment, attribute):
+        att = get_segment_attribute_value(self.data, segment, attribute)
 
     # Load a resource from a file.
     def load_file(self, file_name, collection):
