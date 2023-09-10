@@ -8,7 +8,7 @@ from datetime import datetime
 from order_cmd import order_collection
 from query import *
 from collection import Collection
-from resource import Resource
+from myresource import Resource
 from schema import Schema
 
 HELP = \

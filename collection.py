@@ -5,7 +5,7 @@ Author: Tim Hastings, 2023
 import random
 import uuid
 from schema import Schema
-from resource import Resource
+from myresource import Resource
 from query import get_attribute_value
 
 #
@@ -130,42 +130,72 @@ class Collection:
     # Takes approximately 5 minutes for 10000 records
     # TODO: Implement a faster Order algorithm - see fast_sort()
     #
-    def sort(self, attribute, reverse):
-        n = len(self.resources)
-        swapped = False
+    # def sort(self, attribute, reverse):
+    #     n = len(self.resources)
+    #     swapped = False
 
-        # Traverse through all collection resources.
-        for i in range(n - 1):
-            for j in range(0, n - i - 1):
+    #     # Traverse through all collection resources.
+    #     for i in range(n - 1):
+    #         for j in range(0, n - i - 1):
 
-                # Traverse the collection from 0 to n-i-1
-                # Get the elements from the resource data.
+    #             # Traverse the collection from 0 to n-i-1
+    #             # Get the elements from the resource data.
 
-                try:
-                    # get_attribute_value is very expensive
-                    a = get_attribute_value(self.resources[j].data, attribute)
-                    b = get_attribute_value(self.resources[j + 1].data, attribute)
-                except None:
-                    print("Invalid attribute values")
-                    return
+    #             try:
+    #                 # get_attribute_value is very expensive
+    #                 a = get_attribute_value(self.resources[j].data, attribute)
+    #                 b = get_attribute_value(self.resources[j + 1].data, attribute)
+    #             except None:
+    #                 print("Invalid attribute values")
+    #                 return
 
-                # Check a and b.
-                if a is None or b is None:
-                    print("Invalid attribute comparison")
-                    return
+    #             # Check a and b.
+    #             if a is None or b is None:
+    #                 print("Invalid attribute comparison")
+    #                 return
 
-                # Swap if the resource data attribute found is greater than the next element.
-                if a > b:
-                    swapped = True
-                    self.resources[j], self.resources[j + 1] = self.resources[j + 1], self.resources[j]
+    #             # Swap if the resource data attribute found is greater than the next element.
+    #             if a > b:
+    #                 swapped = True
+    #                 self.resources[j], self.resources[j + 1] = self.resources[j + 1], self.resources[j]
 
-            if not swapped:
-                # No swapping required.
-                return
+    #         if not swapped:
+    #             # No swapping required.
+    #             return
 
-            # Reverse the order if descending.
-            if reverse:
-                self.reverse()
+    #         # Reverse the order if descending.
+    #         if reverse:
+    #             self.reverse()\
+
+    def partition(self,low,high,attrs):
+        pivot = attrs[high]
+        i = low-1
+        for j in range(low,high):
+            if attrs[j]<pivot:
+                i+=1
+                attrs[i],attrs[j]=attrs[j],attrs[i]
+                self.resources[i],self.resources[j]=self.resources[j],self.resources[i]
+        attrs[i+1],attrs[high] = attrs[high],attrs[i+1]
+        self.resources[i+1],self.resources[high]=self.resources[high],self.resources[i+1]
+        return i+1
+
+    # new sort, using fast sort algorithm
+    def sort(self,attribute,reverse):
+        attrs = [resource.get_attribute_value(attribute) for resource in self.resources]
+        length = len(attrs)
+        if length<=1:
+            return
+        stack = [(0,length-1)]
+        while stack:
+            low,high = stack.pop()
+            if low<high:
+                pivot_idx = self.partition(low,high,attrs)
+                if pivot_idx>low:
+                    stack.append((low, pivot_idx-1))
+                if pivot_idx<high:
+                    stack.append((pivot_idx+1, high))
+        if reverse:
+            self.reverse()
 
     #
     # Use the python list sort method to do a very fast search.
